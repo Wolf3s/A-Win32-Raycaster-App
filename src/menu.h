@@ -10,51 +10,51 @@ int success1 = LoadBMP_FromDisk(".\\assets\\new_game.bmpx", &play_bmp);
 
 void draw_newgame(int x, int y, game_bitmap* pic, float scale);
 void draw_exit(int x, int y, game_bitmap* pic, float scale);
-void action_newgame(void);
-void action_exit(void);
-void menu_loop(void);
-
-void action_exit(void)
+class Menu : public Draw
 {
-	bRunning = FALSE;
-	PostQuitMessage(0);
-}
-
-void action_newgame(void)
-{
-	start_game = TRUE;
-}
-
-void menu_loop(void)
-{
-	int pressed = 0;
-
-	if (GetAsyncKeyState(VK_SPACE) < 0)
-		pressed = 1;
-
-	if (curpos >= 2) curpos = 0;
-	if (curpos < 0) curpos = 1;
-
-	if (pressed)
+public:
+	void action_exit(void)
 	{
-		switch (curpos)
-		{
-		case 0:
-		{
-			action_newgame();
-		}break;
-
-		case 1:
-		{
-			action_exit();
-		}
-		}
+		bRunning = FALSE;
+		PostQuitMessage(0);
 	}
 
-	Clear(0xFF);
-	Blit32BMP(&play_bmp, WIN_WIDTH / 2 - 128, WIN_HEIGHT / 2 - 128, 2.0f);
-	Blit32BMP(&exit_bmp, WIN_WIDTH / 2 - 128, WIN_HEIGHT / 2, 2.0f);
-	FillRectangle(WIN_WIDTH / 2 - 192, WIN_HEIGHT / 2 - 90 + 128 * curpos, 50, 50, 0xFFFFFF);
-	//draw_newgame(10, 10, , 1.0f);
-	//draw_exit(10, 10, , 1.0f);
-}
+	void action_newgame(void)
+	{
+		start_game = TRUE;
+	}
+
+	void menu_loop(void)
+	{
+		int pressed = 0;
+		Draw* _Draw;
+
+
+		if (GetAsyncKeyState(VK_SPACE) < 0)
+			pressed = 1;
+
+		if (curpos >= 2) curpos = 0;
+		if (curpos < 0) curpos = 1;
+
+		if (pressed)
+		{
+			switch (curpos)
+			{
+			case 0:
+			{
+				action_newgame();
+			}break;
+
+			case 1:
+			{
+				action_exit();
+			}
+			}
+		}
+
+		Draw::Clear(0xFF);
+		Draw::Blit32BMP(&play_bmp, WIN_WIDTH / 2 - 128, WIN_HEIGHT / 2 - 128, 2.0f);
+		Draw::Blit32BMP(&exit_bmp, WIN_WIDTH / 2 - 128, WIN_HEIGHT / 2, 2.0f);
+		Draw::FillRectangle(WIN_WIDTH / 2 - 192, WIN_HEIGHT / 2 - 90 + 128 * curpos, 50, 50, 0xFFFFFF);
+	}
+};

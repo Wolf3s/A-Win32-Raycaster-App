@@ -134,9 +134,14 @@ bool already_running(void)
 	mutex = CreateMutex(NULL, FALSE, L"GAME_MUTEX");
 
 	if (GetLastError() == ERROR_ALREADY_EXISTS)
+	{
 		return true;
+	}
+
 	else
+	{
 		return false;
+	}
 }
 
 // loads a .bmpx file on memory
@@ -175,7 +180,9 @@ int LoadBMP_FromDisk(const char* file_path, game_bitmap* bitmap_target)
 
 	// now we move to where the bitmap header data is and the we read from it and save in the bitmap
 	if(SetFilePointer(file_hnd, header_data_offset, NULL, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
+	{
 		return -1;
+	}
 
 	if (ReadFile(file_hnd, &bitmap_target->bitmap_info.bmiHeader, sizeof(BITMAPINFOHEADER), &num_bytes_read, NULL) == false)
 	{
@@ -230,7 +237,6 @@ bool LoadTex_ToBuff(game_bitmap* bitmap, uint32_t* texture)
 // copies pixel data into the color variable, given the bitmap portion we want to copy from
 int LoadTextureIndex(uint32_t* color, game_bitmap bitmap, int index_x, int index_y, int tex_x, int tex_y)	//	bitmap.bitmap_info.bmiHeader.biWidth * (1 - TILE_HEIGHT * index_y) <- why i can't do this way :(
 {
-
 	// position relative to the address of the memory holding the bitmap
 	uint32_t start_bitmap = (bitmap.bitmap_info.bmiHeader.biWidth * bitmap.bitmap_info.bmiHeader.biHeight) - bitmap.bitmap_info.bmiHeader.biWidth - TILE_HEIGHT * (index_y - 1) * bitmap.bitmap_info.bmiHeader.biWidth + (index_x - 1) * TILE_HEIGHT;
 	

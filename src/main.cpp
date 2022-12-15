@@ -4,7 +4,8 @@
 #include "draw.h"
 #include <chrono>
 
-using namespace std;
+using std::chrono::system_clock;
+using std::chrono::duration;
 
 int curpos = 0;
 
@@ -52,7 +53,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 	_In_ int nShowCmd) {
 
 	Engine _Engine;
-
+	Draw _Draw;
+	Menu _Menu;
 	// check if there's some problem initializing the engine
 	if (_Engine.Init(WndProc) != 0)
 	{
@@ -92,9 +94,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 	float plane_X = 0.0f;
 	float plane_Y = 0.66f;
 
-	auto start_time = chrono::system_clock::now();
-	auto end_time = chrono::system_clock::now();
-
+	auto start_time = system_clock::now();
+	auto end_time = system_clock::now();
+	
 	float target_fps = 1.0f / 60.0f;
 
 	while (bRunning && player.health != 0) {
@@ -104,8 +106,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 		// we keep track how much time has gone by between frames
 		// so that we know how much we have moved when the scene is rendered
 
-		end_time = chrono::system_clock::now();
-		chrono::duration<float> elapsedTime = end_time - start_time;
+		end_time = system_clock::now();
+		duration<float> elapsedTime = end_time - start_time;
 		start_time = end_time;
 		float elapsed_time = elapsedTime.count();
 
@@ -123,8 +125,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 			float rot_speed = 3.0f;
 
 			// clear screen
-			FillRectangle(0, 0, WIN_WIDTH, WIN_HEIGHT / 2, 0x222222);
-			FillRectangle(0, WIN_HEIGHT / 2, WIN_WIDTH, WIN_HEIGHT / 2, 0x555555);
+			_Draw.FillRectangle(0, 0, WIN_WIDTH, WIN_HEIGHT / 2, 0x222222);
+			_Draw.FillRectangle(0, WIN_HEIGHT / 2, WIN_WIDTH, WIN_HEIGHT / 2, 0x555555);
 
 
 			////////////////////
@@ -377,7 +379,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 
 				float scale = 1.0f * sprite_height / (float)TILE_HEIGHT;
 
-				DrawSprite(&knight_bmp, start_x, start_y, transform_y, scale);
+				_Draw.DrawSprite(&knight_bmp, start_x, start_y, transform_y, scale);
 			}
 
 			////////////////////
@@ -428,7 +430,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 		}
 		else
 		{
-			menu_loop();
+			_Menu.menu_loop();
 		}
 
 		// slap that backybuffer to the screen
