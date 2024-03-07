@@ -10,7 +10,7 @@ int success1 = LoadBMP_FromDisk(".\\assets\\new_game.bmpx", &play_bmp);
 
 void draw_newgame(int x, int y, game_bitmap* pic, float scale);
 void draw_exit(int x, int y, game_bitmap* pic, float scale);
-class Menu : public Draw
+class Menu
 {
 public:
 	void action_exit(void)
